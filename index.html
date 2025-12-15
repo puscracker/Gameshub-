@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Created by Quentin in 2008</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #2a0a5e;
+            --secondary-color: #7c3aed;
+            --accent-color: #f59e0b;
+            --creation-color: #10b981;
+            --avatar-color: #3b82f6;
+            --game-bg: #0f0521;
+            --dark-bg: #0a0418;
+            --light-bg: #f8fafc;
+            --text-light: #ffffff;
+            --text-dark: #1e293b;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: rgba(15, 5, 33, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+        }
+
+        .creation-badge {
+            background-color: var(--creation-color);
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-left: 5px;
+            vertical-align: super;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-color);
+            background-color: rgba(124, 58, 237, 0.1);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 80%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Creation Banner */
+        .creation-banner {
+            background: linear-gradient(90deg, var(--creation-color), #059669);
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 80px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .creation-banner i {
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(15, 5, 33, 0.9), rgba(42, 10, 94, 0.9)), url('https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0 80px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--accent-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--creation-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: #e2e8f0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+            color: var(--text-light);
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.6);
+        }
+
+        /* Playable Games Section */
+        .games-section {
+            padding: 100px 0;
+            background-color: var(--dark-bg);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: var(--accent-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .game-card {
+            background: linear-gradient(145deg, rgba(42, 10, 94, 0.7), rgba(15, 5, 33, 0.9));
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.4);
+            border-color: var(--secondary-color);
+        }
+
+        .game-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(124, 58, 237, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .game-title {
+            font-size: 1.6rem;
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .game-genre {
+            display: inline-block;
+            background-color: rgba(124, 58, 237, 0.3);
+            color: var(--secondary-color);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .game-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-canvas {
+            background-color: #1a0b3a;
+            border-radius: 10px;
+            border: 2px solid rgba(124, 58, 237, 0.3);
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .game-btn {
+            background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .game-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        .game-btn.secondary {
+            background: rgba(124, 58, 237, 0.2);
+            color: var(--text-light);
+        }
+
+        .game-btn.secondary:hover {
+            background: rgba(124, 58, 237, 0.4);
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .game-stat {
+            text-align: center;
+        }
+
+        .game-stat-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+
+        .game-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .game-instructions {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(124, 58, 237, 0.2);
+        }
+
+        .game-instructions h4 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .game-instructions p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .game-instructions ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .game-instructions li {
+            color: #cbd5e1;
+            margin-bottom: 5px;
+        }
+
+        /* Founder Section */
+        .founder-section {
+            padding: 100px 0;
+            background-color: rgba(15, 5, 33, 0.8);
+        }
+
+        .founder-container {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .founder-avatar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-circle {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--avatar-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .avatar-circle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.6);
+        }
+
+        .avatar-letter {
+            font-size: 8rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .avatar-name {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .avatar-title {
+            font-size: 1.2rem;
+            color: var(--creation-color);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .founder-info {
+            flex: 1;
+        }
+
+        .founder-name {
+            font-size: 2.8rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .founder-title {
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .founder-bio {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #cbd5e1;
+        }
+
+        .creation-highlight {
+            background-color: rgba(16, 185, 129, 0.15);
+            border: 2px solid var(--creation-color);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .creation-highlight h3 {
+            color: var(--creation-color);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .creation-highlight p {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(15, 5, 33, 0.95);
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(124, 58, 237, 0.2);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer-about p {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(124, 58, 237, 0.2);
+            color: var(--text-light);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+
+        .footer-heading {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-creation {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(16, 185, 129, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid var(--creation-color);
+        }
+
+        .footer-creation h4 {
+            color: var(--creation-color);
+            margin-bottom: 5px;
+            font-size: 1.3rem;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(124, 58, 237, 0.2);
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .founder-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: var(--dark-bg);
+                flex-direction: column;
+                padding: 20px;
+                gap: 10px;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 80px 0 60px;
+            }
+
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .creation-banner {
+                font-size: 0.9rem;
+                padding: 8px 0;
+            }
+            
+            .avatar-circle {
+                width: 220px;
+                height: 220px;
+            }
+            
+            .avatar-letter {
+                font-size: 6rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .cta-button {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .avatar-circle {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .avatar-letter {
+                font-size: 5rem;
+            }
+            
+            .game-canvas {
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-gamepad"></i>
+                GameHub
+                <span class="creation-badge">2008</span>
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="nav-links" id="navLinks">
+                <a href="#home" class="active">Home</a>
+                <a href="#games">Play Games</a>
+                <a href="#founder">Quentin</a>
+                <a href="#about">About</a>
+                <a href="#community">Community</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Creation Banner -->
+    <div class="creation-banner">
+        <i class="fas fa-birthday-cake"></i>
+        <span id="yearsActive">Celebrating 15+ years of gaming excellence! Created by Quentin in 2008.</span>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Welcome to GameHub</h1>
+            <div class="hero-subtitle">Created by Quentin in 2008</div>
+            <p>Your ultimate destination for premium gaming experiences for over 15 years. Play exciting games right in your browser!</p>
+            <a href="#games" class="cta-button">Play Games Now <i class="fas fa-play"></i></a>
+        </div>
+    </section>
+
+    <!-- Playable Games Section -->
+    <section class="games-section" id="games">
+        <div class="container">
+            <h2 class="section-title">Playable Games</h2>
+            
+            <div class="games-grid">
+                <!-- Game 1: Space Defender -->
+                <div class="game-card">
+                    <div class="game-header">
+                        <h3 class="game-title">Space Defender</h3>
+                        <span class="game-genre">Shooter</span>
+                    </div>
+                    <div class="game-container">
+                        <canvas id="spaceGame" class="game-canvas" width="450" height="300"></canvas>
+                        <div class="game-controls">
+                            <button id="startSpaceGame" class="game-btn">
+                                <i class="fas fa-play"></i> Start Game
+                            </button>
+                            <button id="pauseSpaceGame" class="game-btn secondary">
+                                <i class="fas fa-pause"></i> Pause
+                            </button>
+                            <button id="resetSpaceGame" class="game-btn secondary">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                        <div class="game-info">
+                            <div class="game-stat">
+                                <div class="game-stat-label">Score</div>
+                                <div id="spaceScore" class="game-stat-value">0</div>
+                            </div>
+                            <div class="game-stat">
+                                <div class="game-stat-label">Lives</div>
+                                <div id="spaceLives" class="game-stat-value">3</div>
+                            </div>
+                            <div class="game-stat">
+                                <div class="game-stat-label">Level</div>
+                                <div id="spaceLevel" class="game-stat-value">1</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-instructions">
+                        <h4><i class="fas fa-gamepad"></i> How to Play</h4>
+                        <p>Defend Earth from alien invasion! Move your spaceship with arrow keys and shoot with spacebar.</p>
+                        <ul>
+                            <li><strong>← →</strong> Move spaceship left/right</li>
+                            <li><strong>Spacebar</strong> Fire laser</li>
+                            <li>Avoid alien missiles and destroy all aliens to advance</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Game 2: Memory Match -->
+                <div class="game-card">
+                    <div class="game-header">
+                        <h3 class="game-title">Memory Match</h3>
+                        <span class="game-genre">Puzzle</span>
+                    </div>
+                    <div class="game-container">
+                        <canvas id="memoryGame" class="game-canvas" width="450" height="300"></canvas>
+                        <div class="game-controls">
+                            <button id="startMemoryGame" class="game-btn">
+                                <i class="fas fa-play"></i> Start Game
+                            </button>
+                            <button id="resetMemoryGame" class="game-btn secondary">
+                                <i class="fas fa-redo"></i> New Game
+                            </button>
+                        </div>
+                        <div class="game-info">
+                            <div class="game-stat">
+                                <div class="game-stat-label">Moves</div>
+                                <div id="memoryMoves" class="game-stat-value">0</div>
+                            </div>
+                            <div class="game-stat">
+                                <div class="game-stat-label">Matches</div>
+                                <div id="memoryMatches" class="game-stat-value">0/8</div>
+                            </div>
+                            <div class="game-stat">
+                                <div class="game-stat-label">Time</div>
+                                <div id="memoryTime" class="game-stat-value">0s</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-instructions">
+                        <h4><i class="fas fa-brain"></i> How to Play</h4>
+                        <p>Test your memory! Find matching pairs of cards.</p>
+                        <ul>
+                            <li>Click on cards to flip them</li>
+                            <li>Find two matching cards to make a pair</li>
+                            <li>Complete all 8 pairs with the fewest moves</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Game 3: Snake Classic -->
+                <div class="game-card">
+                    <div class="game-header">
+                        <h3 class="game-title">Snake Classic</h3>
+                        <span class="game-genre">Arcade</span>
+                    </div>
+                    <div class="game-container">
+                        <canvas id="snakeGame" class="game-canvas" width="450" height="300"></canvas>
+                        <div class="game-controls">
+                            <button id="startSnakeGame" class="game-btn">
+                                <i class="fas fa-play"></i> Start Game
+                            </button>
+                            <button id="pauseSnakeGame" class="game-btn secondary">
+                                <i class="fas fa-pause"></i> Pause
+                            </button>
+                            <button id="resetSnakeGame" class="game-btn secondary">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                        <div class="game-info">
+                            <div class="game-stat">
+                                <div class="game-stat-label">Score</div>
+                                <div id="snakeScore" class="game-stat-value">0</div>
+                            </div>
+                            <div class="game-stat">
+                                <div class="game-stat-label">Length</div>
+                                <div id="snakeLength" class="game-stat-value">3</div>
+                            </div>
+                            <div class="game-stat">
+                                <div class="game-stat-label">High Score</div>
+                                <div id="snakeHighScore" class="game-stat-value">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-instructions">
+                        <h4><i class="fas fa-snake"></i> How to Play</h4>
+                        <p>Control the snake and eat food to grow longer. Avoid walls and yourself!</p>
+                        <ul>
+                            <li><strong>↑ ↓ ← →</strong> Arrow keys to control direction</li>
+                            <li>Eat the red food to grow and score points</li>
+                            <li>Don't hit the walls or your own tail</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder Section -->
+    <section class="founder-section" id="founder">
+        <div class="container">
+            <h2 class="section-title">Meet Quentin</h2>
+            <div class="founder-container">
+                <div class="founder-avatar">
+                    <div class="avatar-circle">
+                        <div class="avatar-letter">Q</div>
+                    </div>
+                    <div class="avatar-name">Quentin</div>
+                    <div class="avatar-title">Creator of GameHub</div>
+                </div>
+                <div class="founder-info">
+                    <h3 class="founder-name">Quentin</h3>
+                    <p class="founder-title">Creator of GameHub | Gaming Visionary</p>
+                    <p class="founder-bio">Quentin is a visionary in the gaming industry with over 20 years of experience. His passion for interactive entertainment began in the early 90s with classic arcade games. In 2008, he single-handedly created GameHub with a mission to build a centralized platform where gamers of all types could discover, play, and connect over the best games available.</p>
+                    <p class="founder-bio">As the sole creator of GameHub, Quentin designed, developed, and launched the platform in 2008. His dedication and innovative approach have transformed GameHub from a personal project into one of the most recognized gaming platforms worldwide, with over 10 million active users.</p>
+                    
+                    <div class="creation-highlight">
+                        <h3><i class="fas fa-rocket"></i> Created from the Ground Up</h3>
+                        <p>Quentin personally designed and coded the original GameHub platform in 2008, creating every aspect from the game engine to the user interface.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <a href="#" class="footer-logo">
+                        <i class="fas fa-gamepad"></i> GameHub
+                    </a>
+                    <p>GameHub is your premier destination for gaming since its creation in 2008 by Quentin. Play exciting games right in your browser with no downloads required!</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#games">Play Games</a></li>
+                        <li><a href="#founder">Quentin</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#community">Community</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3 class="footer-heading">Game Categories</h3>
+                    <ul>
+                        <li><a href="#games">Shooter Games</a></li>
+                        <li><a href="#games">Puzzle Games</a></li>
+                        <li><a href="#games">Arcade Games</a></li>
+                        <li><a href="#games">All Games</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3 class="footer-heading">Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Gaming Street, Virtual City</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-GAME</li>
+                        <li><i class="fas fa-envelope"></i> info@gamehub.com</li>
+                        <li><i class="fas fa-user"></i> Creator: Quentin</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-creation">
+                <h4><i class="fas fa-history"></i> A Legacy Since 2008</h4>
+                <p>GameHub was personally created and developed by Quentin in 2008. What began as a passion project has evolved into a premier gaming destination used by millions worldwide.</p>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2008-<span id="currentYear">2023</span> GameHub. All rights reserved. Created by Quentin in 2008.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (mobileMenuBtn && navLinks) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
+                        ? '<i class="fas fa-times"></i>' 
+                        : '<i class="fas fa-bars"></i>';
+                });
+                
+                // Close mobile menu when clicking on a link
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('active');
+                        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    });
+                });
+            }
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Header scroll effect
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('header');
+                if (header) {
+                    if (window.scrollY > 100) {
+                        header.style.backgroundColor = 'rgba(15, 5, 33, 0.98)';
+                        header.style.padding = '10px 0';
+                    } else {
+                        header.style.backgroundColor = 'rgba(15, 5, 33, 0.95)';
+                        header.style.padding = '15px 0';
+                    }
+                }
+            });
+            
+            // Update year information
+            const creationYear = 2008;
+            const currentYear = new Date().getFullYear();
+            const yearsActive = currentYear - creationYear;
+            
+            // Update years active banner
+            const yearsActiveElement = document.getElementById('yearsActive');
+            if (yearsActiveElement) {
+                yearsActiveElement.textContent = `Celebrating ${yearsActive}+ years of gaming excellence! Created by Quentin in ${creationYear}.`;
+            }
+            
+            // Update current year in copyright
+            const currentYearElement = document.getElementById('currentYear');
+            if (currentYearElement) {
+                currentYearElement.textContent = currentYear;
+            }
+            
+            // Add interactive effect to avatar
+            const avatarCircle = document.querySelector('.avatar-circle');
+            if (avatarCircle) {
+                avatarCircle.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05) rotate(5deg)';
+                });
+                
+                avatarCircle.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1.05)';
+                });
+            }
+            
+            // Initialize all games
+            initializeSpaceGame();
+            initializeMemoryGame();
+            initializeSnakeGame();
+        });
+
+        // ===========================================
+        // GAME 1: SPACE DEFENDER
+        // ===========================================
+        function initializeSpaceGame() {
+            const canvas = document.getElementById('spaceGame');
+            const ctx = canvas.getContext('2d');
+            const scoreElement = document.getElementById('spaceScore');
+            const livesElement = document.getElementById('spaceLives');
+            const levelElement = document.getElementById('spaceLevel');
+            
+            let gameRunning = false;
+            let gamePaused = false;
+            let score = 0;
+            let lives = 3;
+            let level = 1;
+            let animationId;
+            
+            // Game objects
+            const player = {
+                x: canvas.width / 2 - 25,
+                y: canvas.height - 50,
+                width: 50,
+                height: 30,
+                speed: 8,
+                color: '#10b981'
+            };
+            
+            let bullets = [];
+            let aliens = [];
+            let alienBullets = [];
+            
+            // Initialize aliens
+            function createAliens() {
+                aliens = [];
+                const rows = 2 + level;
+                const cols = 5;
+                const alienWidth = 40;
+                const alienHeight = 30;
+                const padding = 20;
+                
+                for (let row = 0; row < rows; row++) {
+                    for (let col = 0; col < cols; col++) {
+                        aliens.push({
+                            x: col * (alienWidth + padding) + 50,
+                            y: row * (alienHeight + padding) + 50,
+                            width: alienWidth,
+                            height: alienHeight,
+                            color: row % 2 === 0 ? '#f59e0b' : '#7c3aed',
+                            speed: 1 + level * 0.5,
+                            direction: 1
+                        });
+                    }
+                }
+            }
+            
+            // Draw player
+            function drawPlayer() {
+                ctx.fillStyle = player.color;
+                // Draw spaceship body
+                ctx.beginPath();
+                ctx.moveTo(player.x, player.y + player.height);
+                ctx.lineTo(player.x + player.width / 2, player.y);
+                ctx.lineTo(player.x + player.width, player.y + player.height);
+                ctx.closePath();
+                ctx.fill();
+                
+                // Draw cockpit
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillRect(player.x + player.width / 2 - 5, player.y + 5, 10, 10);
+            }
+            
+            // Draw bullets
+            function drawBullets() {
+                bullets.forEach(bullet => {
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                });
+            }
+            
+            // Draw aliens
+            function drawAliens() {
+                aliens.forEach(alien => {
+                    ctx.fillStyle = alien.color;
+                    ctx.beginPath();
+                    ctx.arc(alien.x + alien.width / 2, alien.y + alien.height / 2, alien.width / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Draw alien eyes
+                    ctx.fillStyle = 'white';
+                    ctx.fillRect(alien.x + alien.width / 4, alien.y + alien.height / 3, 5, 5);
+                    ctx.fillRect(alien.x + alien.width * 3/4 - 5, alien.y + alien.height / 3, 5, 5);
+                });
+            }
+            
+            // Draw alien bullets
+            function drawAlienBullets() {
+                alienBullets.forEach(bullet => {
+                    ctx.fillStyle = '#ef4444';
+                    ctx.beginPath();
+                    ctx.arc(bullet.x, bullet.y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+            
+            // Update game state
+            function update() {
+                if (gamePaused || !gameRunning) return;
+                
+                // Move bullets
+                bullets = bullets.filter(bullet => {
+                    bullet.y -= 8;
+                    return bullet.y > 0;
+                });
+                
+                // Move alien bullets
+                alienBullets = alienBullets.filter(bullet => {
+                    bullet.y += 5;
+                    return bullet.y < canvas.height;
+                });
+                
+                // Move aliens
+                let changeDirection = false;
+                aliens.forEach(alien => {
+                    alien.x += alien.speed * alien.direction;
+                    
+                    if (alien.x <= 0 || alien.x + alien.width >= canvas.width) {
+                        changeDirection = true;
+                    }
+                });
+                
+                if (changeDirection) {
+                    aliens.forEach(alien => {
+                        alien.direction *= -1;
+                        alien.y += 20;
+                    });
+                }
+                
+                // Check collisions: bullets vs aliens
+                bullets.forEach((bullet, bulletIndex) => {
+                    aliens.forEach((alien, alienIndex) => {
+                        if (bullet.x < alien.x + alien.width &&
+                            bullet.x + bullet.width > alien.x &&
+                            bullet.y < alien.y + alien.height &&
+                            bullet.y + bullet.height > alien.y) {
+                            
+                            // Collision detected
+                            bullets.splice(bulletIndex, 1);
+                            aliens.splice(alienIndex, 1);
+                            score += 10 * level;
+                            scoreElement.textContent = score;
+                            
+                            // Check if level complete
+                            if (aliens.length === 0) {
+                                level++;
+                                levelElement.textContent = level;
+                                createAliens();
+                            }
+                        }
+                    });
+                });
+                
+                // Check collisions: alien bullets vs player
+                alienBullets.forEach(bullet => {
+                    if (bullet.x > player.x &&
+                        bullet.x < player.x + player.width &&
+                        bullet.y > player.y &&
+                        bullet.y < player.y + player.height) {
+                        
+                        lives--;
+                        livesElement.textContent = lives;
+                        
+                        if (lives <= 0) {
+                            gameOver();
+                        }
+                    }
+                });
+                
+                // Aliens shoot randomly
+                if (aliens.length > 0 && Math.random() < 0.02) {
+                    const shooter = aliens[Math.floor(Math.random() * aliens.length)];
+                    alienBullets.push({
+                        x: shooter.x + shooter.width / 2,
+                        y: shooter.y + shooter.height,
+                        radius: 3
+                    });
+                }
+            }
+            
+            // Game loop
+            function gameLoop() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                drawPlayer();
+                drawBullets();
+                drawAliens();
+                drawAlienBullets();
+                update();
+                
+                if (gameRunning) {
+                    animationId = requestAnimationFrame(gameLoop);
+                }
+            }
+            
+            // Game controls
+            const keys = {};
+            
+            window.addEventListener('keydown', (e) => {
+                keys[e.key] = true;
+                
+                // Spacebar to shoot
+                if (e.key === ' ' && gameRunning && !gamePaused) {
+                    bullets.push({
+                        x: player.x + player.width / 2 - 2,
+                        y: player.y,
+                        width: 4,
+                        height: 10
+                    });
+                }
+            });
+            
+            window.addEventListener('keyup', (e) => {
+                keys[e.key] = false;
+            });
+            
+            // Move player based on keys
+            function handlePlayerMovement() {
+                if (keys['ArrowLeft'] && player.x > 0) {
+                    player.x -= player.speed;
+                }
+                if (keys['ArrowRight'] && player.x + player.width < canvas.width) {
+                    player.x += player.speed;
+                }
+            }
+            
+            // Game control functions
+            function startGame() {
+                if (!gameRunning) {
+                    gameRunning = true;
+                    gamePaused = false;
+                    score = 0;
+                    lives = 3;
+                    level = 1;
+                    bullets = [];
+                    alienBullets = [];
+                    
+                    scoreElement.textContent = score;
+                    livesElement.textContent = lives;
+                    levelElement.textContent = level;
+                    
+                    createAliens();
+                    gameLoop();
+                    
+                    // Handle movement in game loop
+                    function movementLoop() {
+                        if (gameRunning && !gamePaused) {
+                            handlePlayerMovement();
+                        }
+                        if (gameRunning) {
+                            requestAnimationFrame(movementLoop);
+                        }
+                    }
+                    movementLoop();
+                }
+            }
+            
+            function pauseGame() {
+                if (gameRunning) {
+                    gamePaused = !gamePaused;
+                }
+            }
+            
+            function resetGame() {
+                gameRunning = false;
+                gamePaused = false;
+                cancelAnimationFrame(animationId);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                score = 0;
+                lives = 3;
+                level = 1;
+                
+                scoreElement.textContent = score;
+                livesElement.textContent = lives;
+                levelElement.textContent = level;
+            }
+            
+            function gameOver() {
+                gameRunning = false;
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = 'white';
+                ctx.font = '30px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2);
+                ctx.font = '20px Arial';
+                ctx.fillText(`Final Score: ${score}`, canvas.width / 2, canvas.height / 2 + 40);
+            }
+            
+            // Event listeners for game buttons
+            document.getElementById('startSpaceGame').addEventListener('click', startGame);
+            document.getElementById('pauseSpaceGame').addEventListener('click', pauseGame);
+            document.getElementById('resetSpaceGame').addEventListener('click', resetGame);
+        }
+
+        // ===========================================
+        // GAME 2: MEMORY MATCH
+        // ===========================================
+        function initializeMemoryGame() {
+            const canvas = document.getElementById('memoryGame');
+            const ctx = canvas.getContext('2d');
+            const movesElement = document.getElementById('memoryMoves');
+            const matchesElement = document.getElementById('memoryMatches');
+            const timeElement = document.getElementById('memoryTime');
+            
+            let gameRunning = false;
+            let moves = 0;
+            let matches = 0;
+            let startTime = 0;
+            let timerInterval;
+            
+            // Card colors
+            const colors = [
+                '#f59e0b', '#7c3aed', '#10b981', '#3b82f6',
+                '#ef4444', '#8b5cf6', '#06b6d4', '#84cc16'
+            ];
+            
+            let cards = [];
+            let flippedCards = [];
+            let matchedCards = [];
+            
+            // Initialize cards
+            function createCards() {
+                cards = [];
+                const cardWidth = 80;
+                const cardHeight = 100;
+                const padding = 15;
+                const cols = 4;
+                const rows = 4;
+                
+                // Create pairs of cards
+                let cardValues = [...colors, ...colors];
+                // Shuffle
+                for (let i = cardValues.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [cardValues[i], cardValues[j]] = [cardValues[j], cardValues[i]];
+                }
+                
+                // Create card objects
+                for (let row = 0; row < rows; row++) {
+                    for (let col = 0; col < cols; col++) {
+                        const index = row * cols + col;
+                        cards.push({
+                            x: col * (cardWidth + padding) + 50,
+                            y: row * (cardHeight + padding) + 20,
+                            width: cardWidth,
+                            height: cardHeight,
+                            color: cardValues[index],
+                            flipped: false,
+                            matched: false,
+                            id: index
+                        });
+                    }
+                }
+            }
+            
+            // Draw cards
+            function drawCards() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                cards.forEach(card => {
+                    // Draw card back or front
+                    if (!card.flipped && !card.matched) {
+                        // Card back
+                        ctx.fillStyle = '#1e293b';
+                        ctx.fillRect(card.x, card.y, card.width, card.height);
+                        ctx.strokeStyle = '#7c3aed';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(card.x, card.y, card.width, card.height);
+                        
+                        // Draw pattern
+                        ctx.fillStyle = '#334155';
+                        for (let i = 0; i < 4; i++) {
+                            for (let j = 0; j < 5; j++) {
+                                ctx.fillRect(
+                                    card.x + 10 + j * 15,
+                                    card.y + 10 + i * 20,
+                                    8, 8
+                                );
+                            }
+                        }
+                    } else {
+                        // Card front
+                        ctx.fillStyle = card.color;
+                        ctx.fillRect(card.x, card.y, card.width, card.height);
+                        ctx.strokeStyle = 'white';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(card.x, card.y, card.width, card.height);
+                        
+                        // Draw pattern on matched cards
+                        if (card.matched) {
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                            for (let i = 0; i < 3; i++) {
+                                ctx.fillRect(
+                                    card.x + 10,
+                                    card.y + 20 + i * 20,
+                                    card.width - 20, 10
+                                );
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Handle card click
+            canvas.addEventListener('click', (e) => {
+                if (!gameRunning || flippedCards.length >= 2) return;
+                
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                cards.forEach(card => {
+                    if (!card.flipped && !card.matched &&
+                        x > card.x && x < card.x + card.width &&
+                        y > card.y && y < card.y + card.height) {
+                        
+                        card.flipped = true;
+                        flippedCards.push(card);
+                        
+                        if (flippedCards.length === 2) {
+                            moves++;
+                            movesElement.textContent = moves;
+                            
+                            setTimeout(() => {
+                                const card1 = flippedCards[0];
+                                const card2 = flippedCards[1];
+                                
+                                if (card1.color === card2.color) {
+                                    card1.matched = true;
+                                    card2.matched = true;
+                                    matches++;
+                                    matchesElement.textContent = `${matches}/8`;
+                                    
+                                    // Check win condition
+                                    if (matches === 8) {
+                                        gameWin();
+                                    }
+                                } else {
+                                    card1.flipped = false;
+                                    card2.flipped = false;
+                                }
+                                
+                                flippedCards = [];
+                            }, 1000);
+                        }
+                        
+                        drawCards();
+                    }
+                });
+            });
+            
+            // Start game
+            function startGame() {
+                if (!gameRunning) {
+                    gameRunning = true;
+                    moves = 0;
+                    matches = 0;
+                    flippedCards = [];
+                    matchedCards = [];
+                    
+                    movesElement.textContent = moves;
+                    matchesElement.textContent = `${matches}/8`;
+                    
+                    startTime = Date.now();
+                    clearInterval(timerInterval);
+                    timerInterval = setInterval(updateTimer, 1000);
+                    
+                    createCards();
+                    drawCards();
+                }
+            }
+            
+            // Reset game
+            function resetGame() {
+                gameRunning = false;
+                clearInterval(timerInterval);
+                timeElement.textContent = '0s';
+                startGame();
+            }
+            
+            // Update timer
+            function updateTimer() {
+                if (gameRunning) {
+                    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                    timeElement.textContent = `${elapsed}s`;
+                }
+            }
+            
+            // Game win
+            function gameWin() {
+                gameRunning = false;
+                clearInterval(timerInterval);
+                
+                ctx.fillStyle = 'rgba(16, 185, 129, 0.9)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = 'white';
+                ctx.font = '30px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('YOU WIN!', canvas.width / 2, canvas.height / 2 - 30);
+                ctx.font = '20px Arial';
+                ctx.fillText(`Moves: ${moves}`, canvas.width / 2, canvas.height / 2 + 10);
+                ctx.fillText(`Time: ${Math.floor((Date.now() - startTime) / 1000)}s`, canvas.width / 2, canvas.height / 2 + 40);
+            }
+            
+            // Event listeners for game buttons
+            document.getElementById('startMemoryGame').addEventListener('click', startGame);
+            document.getElementById('resetMemoryGame').addEventListener('click', resetGame);
+        }
+
+        // ===========================================
+        // GAME 3: SNAKE CLASSIC
+        // ===========================================
+        function initializeSnakeGame() {
+            const canvas = document.getElementById('snakeGame');
+            const ctx = canvas.getContext('2d');
+            const scoreElement = document.getElementById('snakeScore');
+            const lengthElement = document.getElementById('snakeLength');
+            const highScoreElement = document.getElementById('snakeHighScore');
+            
+            let gameRunning = false;
+            let gamePaused = false;
+            let score = 0;
+            let highScore = localStorage.getItem('snakeHighScore') || 0;
+            let animationId;
+            
+            highScoreElement.textContent = highScore;
+            
+            // Game settings
+            const gridSize = 20;
+            const gridWidth = canvas.width / gridSize;
+            const gridHeight = canvas.height / gridSize;
+            
+            // Snake
+            let snake = [
+                {x: 10, y: 10}
+            ];
+            let direction = {x: 0, y: 0};
+            let nextDirection = {x: 0, y: 0};
+            
+            // Food
+            let food = {x: 15, y: 15};
+            
+            // Draw game
+            function draw() {
+                // Clear canvas
+                ctx.fillStyle = '#1a0b3a';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw grid
+                ctx.strokeStyle = 'rgba(124, 58, 237, 0.1)';
+                ctx.lineWidth = 1;
+                for (let x = 0; x < canvas.width; x += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvas.height);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < canvas.height; y += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
+                }
+                
+                // Draw snake
+                snake.forEach((segment, index) => {
+                    if (index === 0) {
+                        // Head
+                        ctx.fillStyle = '#10b981';
+                    } else {
+                        // Body
+                        const colorValue = 150 + index * 5;
+                        ctx.fillStyle = `rgb(59, ${colorValue}, 246)`;
+                    }
+                    
+                    ctx.fillRect(
+                        segment.x * gridSize,
+                        segment.y * gridSize,
+                        gridSize - 2,
+                        gridSize - 2
+                    );
+                    
+                    // Draw snake eyes on head
+                    if (index === 0) {
+                        ctx.fillStyle = 'white';
+                        ctx.fillRect(
+                            segment.x * gridSize + 5,
+                            segment.y * gridSize + 5,
+                            4, 4
+                        );
+                        ctx.fillRect(
+                            segment.x * gridSize + gridSize - 9,
+                            segment.y * gridSize + 5,
+                            4, 4
+                        );
+                    }
+                });
+                
+                // Draw food
+                ctx.fillStyle = '#ef4444';
+                ctx.beginPath();
+                ctx.arc(
+                    food.x * gridSize + gridSize / 2,
+                    food.y * gridSize + gridSize / 2,
+                    gridSize / 2 - 2,
+                    0, Math.PI * 2
+                );
+                ctx.fill();
+                
+                // Draw food detail
+                ctx.fillStyle = '#fca5a5';
+                ctx.beginPath();
+                ctx.arc(
+                    food.x * gridSize + gridSize / 2,
+                    food.y * gridSize + gridSize / 2,
+                    gridSize / 4,
+                    0, Math.PI * 2
+                );
+                ctx.fill();
+            }
+            
+            // Update game state
+            function update() {
+                if (gamePaused || !gameRunning) return;
+                
+                // Update direction
+                direction = {...nextDirection};
+                
+                // Move snake
+                const head = {...snake[0]};
+                head.x += direction.x;
+                head.y += direction.y;
+                
+                // Check wall collision
+                if (head.x < 0 || head.x >= gridWidth || head.y < 0 || head.y >= gridHeight) {
+                    gameOver();
+                    return;
+                }
+                
+                // Check self collision
+                for (let segment of snake) {
+                    if (head.x === segment.x && head.y === segment.y) {
+                        gameOver();
+                        return;
+                    }
+                }
+                
+                // Add new head
+                snake.unshift(head);
+                
+                // Check food collision
+                if (head.x === food.x && head.y === food.y) {
+                    // Increase score and length
+                    score += 10;
+                    scoreElement.textContent = score;
+                    lengthElement.textContent = snake.length;
+                    
+                    // Generate new food
+                    generateFood();
+                    
+                    // Update high score
+                    if (score > highScore) {
+                        highScore = score;
+                        highScoreElement.textContent = highScore;
+                        localStorage.setItem('snakeHighScore', highScore);
+                    }
+                } else {
+                    // Remove tail if no food eaten
+                    snake.pop();
+                }
+            }
+            
+            // Generate food at random position
+            function generateFood() {
+                let newFood;
+                let foodOnSnake;
+                
+                do {
+                    newFood = {
+                        x: Math.floor(Math.random() * gridWidth),
+                        y: Math.floor(Math.random() * gridHeight)
+                    };
+                    
+                    foodOnSnake = snake.some(segment => 
+                        segment.x === newFood.x && segment.y === newFood.y
+                    );
+                } while (foodOnSnake);
+                
+                food = newFood;
+            }
+            
+            // Game loop
+            function gameLoop() {
+                update();
+                draw();
+                
+                if (gameRunning) {
+                    animationId = setTimeout(() => {
+                        requestAnimationFrame(gameLoop);
+                    }, 1000 / 10); // 10 FPS for snake game
+                }
+            }
+            
+            // Control snake with arrow keys
+            window.addEventListener('keydown', (e) => {
+                if (!gameRunning || gamePaused) return;
+                
+                switch (e.key) {
+                    case 'ArrowUp':
+                        if (direction.y !== 1) nextDirection = {x: 0, y: -1};
+                        break;
+                    case 'ArrowDown':
+                        if (direction.y !== -1) nextDirection = {x: 0, y: 1};
+                        break;
+                    case 'ArrowLeft':
+                        if (direction.x !== 1) nextDirection = {x: -1, y: 0};
+                        break;
+                    case 'ArrowRight':
+                        if (direction.x !== -1) nextDirection = {x: 1, y: 0};
+                        break;
+                }
+            });
+            
+            // Game control functions
+            function startGame() {
+                if (!gameRunning) {
+                    gameRunning = true;
+                    gamePaused = false;
+                    score = 0;
+                    snake = [{x: 10, y: 10}];
+                    direction = {x: 0, y: 0};
+                    nextDirection = {x: 0, y: 0};
+                    generateFood();
+                    
+                    scoreElement.textContent = score;
+                    lengthElement.textContent = snake.length;
+                    
+                    gameLoop();
+                }
+            }
+            
+            function pauseGame() {
+                if (gameRunning) {
+                    gamePaused = !gamePaused;
+                }
+            }
+            
+            function resetGame() {
+                gameRunning = false;
+                gamePaused = false;
+                clearTimeout(animationId);
+                score = 0;
+                snake = [{x: 10, y: 10}];
+                direction = {x: 0, y: 0};
+                nextDirection = {x: 0, y: 0};
+                
+                scoreElement.textContent = score;
+                lengthElement.textContent = snake.length;
+                
+                draw();
+            }
+            
+            function gameOver() {
+                gameRunning = false;
+                
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = 'white';
+                ctx.font = '30px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
+                ctx.font = '20px Arial';
+                ctx.fillText(`Score: ${score}`, canvas.width / 2, canvas.height / 2 + 20);
+                ctx.fillText(`High Score: ${highScore}`, canvas.width / 2, canvas.height / 2 + 50);
+            }
+            
+            // Event listeners for game buttons
+            document.getElementById('startSnakeGame').addEventListener('click', startGame);
+            document.getElementById('pauseSnakeGame').addEventListener('click', pauseGame);
+            document.getElementById('resetSnakeGame').addEventListener('click', resetGame);
+            
+            // Draw initial state
+            draw();
+        }
+    </script>
+</body>
+</html>
